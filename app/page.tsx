@@ -1,6 +1,6 @@
-"use client";
-
-import { useReveal } from "@/hooks/useReveal";
+import { client } from "@/sanity/lib/client";
+import { MENU_QUERY, FORMULES_QUERY, AVIS_QUERY } from "@/sanity/lib/queries";
+import PageWrapper from "@/components/PageWrapper";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Introduction from "@/components/Introduction";
@@ -36,11 +36,25 @@ const jsonLd = {
   },
 };
 
-export default function Home() {
-  useReveal();
+export const revalidate = 60;
+
+export default async function Home() {
+  let menuItems = [];
+  let formules = [];
+  let avis = [];
+
+  try {
+    [menuItems, formules, avis] = await Promise.all([
+      client.fetch(MENU_QUERY),
+      client.fetch(FORMULES_QUERY),
+      client.fetch(AVIS_QUERY),
+    ]);
+  } catch {
+    // Fallback to static data in components
+  }
 
   return (
-    <>
+    <PageWrapper>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -49,15 +63,15 @@ export default function Home() {
       <main>
         <Hero />
         <Introduction />
-        <CarteTabs />
-        <Formules />
+        <CarteTabs items={menuItems} />
+        <Formules formules={formules} />
         <Terroir />
         <Galerie />
-        <Avis />
+        <Avis avis={avis} />
         <Domaine />
         <Reservation />
       </main>
       <Footer />
-    </>
+    </PageWrapper>
   );
 }
