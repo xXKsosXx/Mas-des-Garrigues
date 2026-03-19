@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return null;
+  return new Resend(key);
+}
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
@@ -49,6 +53,14 @@ export async function POST(request: NextRequest) {
     }
 
     const serviceLabel = service === "dejeuner" ? "Déjeuner" : "Dîner";
+
+    const resend = getResend();
+    if (!resend) {
+      return NextResponse.json(
+        { error: "Service email non configuré." },
+        { status: 500 }
+      );
+    }
 
     await resend.emails.send({
       from: "Sparkana Réservations <bonjour@sparkana.fr>",
