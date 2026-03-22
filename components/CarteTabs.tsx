@@ -144,7 +144,8 @@ export default function CarteTabs({ items }: { items?: MenuItem[] }) {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-[2px] bg-[rgba(200,169,110,0.1)] reveal">
+        {/* Desktop: grid 2 colonnes */}
+        <div className="hidden md:grid md:grid-cols-2 gap-[2px] bg-[rgba(200,169,110,0.1)] reveal">
           {filtered.map((item) => (
             <div
               key={item._id}
@@ -170,6 +171,43 @@ export default function CarteTabs({ items }: { items?: MenuItem[] }) {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Mobile: scroll horizontal */}
+        <div className="md:hidden reveal">
+          <div className="flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-6">
+            {filtered.map((item) => (
+              <div
+                key={item._id}
+                className="min-w-[280px] snap-start bg-pierre border border-[rgba(200,169,110,0.12)] p-6 shrink-0"
+              >
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <h3 className="font-display text-[18px] text-creme-light flex-1">
+                    {item.nom}
+                  </h3>
+                  <span className="font-display text-or text-[22px] shrink-0">
+                    {item.prix}€
+                  </span>
+                </div>
+                <p className="font-display italic text-gris text-[13px] leading-relaxed">
+                  {item.description}
+                </p>
+                {item.badge && (
+                  <span className="inline-block mt-3 border border-or text-or px-3 py-1 text-[9px] uppercase tracking-[0.2em]">
+                    {item.badge}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center gap-2 mt-2">
+            {filtered.map((_, i) => (
+              <div
+                key={i}
+                className="w-1.5 h-1.5 rounded-full bg-or/30"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

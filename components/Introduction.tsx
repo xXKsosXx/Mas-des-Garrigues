@@ -1,4 +1,5 @@
 import Image from "next/image";
+import AnimatedCounter from "./AnimatedCounter";
 
 export default function Introduction() {
   return (
@@ -29,19 +30,25 @@ export default function Introduction() {
 
           <div className="flex gap-12">
             <div className="reveal reveal-delay-1">
-              <span className="font-display text-or text-4xl font-light">38</span>
+              <span className="font-display text-or text-4xl font-light">
+                <AnimatedCounter end={38} />
+              </span>
               <p className="text-gris text-[11px] uppercase tracking-[0.2em] mt-1">
                 Couverts
               </p>
             </div>
             <div className="reveal reveal-delay-2">
-              <span className="font-display text-or text-4xl font-light">12</span>
+              <span className="font-display text-or text-4xl font-light">
+                <AnimatedCounter end={12} />
+              </span>
               <p className="text-gris text-[11px] uppercase tracking-[0.2em] mt-1">
                 Producteurs
               </p>
             </div>
             <div className="reveal reveal-delay-3">
-              <span className="font-display text-or text-4xl font-light">2008</span>
+              <span className="font-display text-or text-4xl font-light">
+                <AnimatedCounter end={2008} duration={3000} />
+              </span>
               <p className="text-gris text-[11px] uppercase tracking-[0.2em] mt-1">
                 Depuis
               </p>
